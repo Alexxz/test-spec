@@ -1,5 +1,5 @@
 {
-  "recorded_at_utc": "2026-10-25T11:31:07.002434+00:00",
+  "recorded_at_utc": "2026-10-25T11:45:08.563515+00:00",
   "environment": {
     "python": "3.14.4",
     "sqlite": "3.46.1",
@@ -8,7 +8,7 @@
     "os_release": "7.0.0-38-generic",
     "architecture": "x86_64"
   },
-  "script_sha256": "327d3485c0d4f07572c9165e1cd829b32e81358e27c003125bff34f3597edcf7",
+  "script_sha256": "a6e4461da45832805ed0947dba62484d91876e520c9080eb7a2b129aed575f88",
   "scope": "Temporary platform experiments only; no application, crash, HTTP or performance acceptance.",
   "checks": [
     {
@@ -36,7 +36,21 @@
           "١٢٣",
           "１２３",
           "1-23"
-        ]
+        ],
+        "unpaired_surrogate_utf8_error": "UnicodeEncodeError",
+        "unpaired_surrogate_binding_error": "UnicodeEncodeError",
+        "supplemental_unicode_roundtrip": true,
+        "control_categories": {
+          "U+0000": "Cc",
+          "U+0009": "Cc",
+          "U+000D": "Cc",
+          "U+000A": "Cc",
+          "U+007F": "Cc",
+          "U+0085": "Cc",
+          "U+2028": "Zl",
+          "U+2029": "Zp"
+        },
+        "nbsp_category": "Zs"
       }
     },
     {
@@ -47,7 +61,10 @@
         "synchronous": 2,
         "schema_and_markers_rollback": true,
         "schema_and_markers_persist": true,
-        "commit_rollback_with_autocommit_false": true
+        "commit_rollback_with_autocommit_false": true,
+        "healthy_integrity_check": [
+          "ok"
+        ]
       }
     },
     {

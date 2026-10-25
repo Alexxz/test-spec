@@ -29,7 +29,33 @@ def python_strings(_directory):
         require(re.fullmatch(r"[+]?[0-9]{1,15}", value) is not None, repr(value))
     for value in rejected:
         require(re.fullmatch(r"[+]?[0-9]{1,15}", value) is None, repr(value))
-    return {"whitespace": whitespace, "accepted_phones": accepted, "rejected_phones": rejected}
+    unpaired = json.loads(r'"\ud800"')
+    require(len(unpaired) == 1, "JSON decoder did not expose the expected boundary case")
+    utf8_error = None
+    try:
+        unpaired.encode("utf-8", errors="strict")
+    except UnicodeEncodeError as error:
+        utf8_error = type(error).__name__
+    require(utf8_error == "UnicodeEncodeError", "Unpaired surrogate encoded as strict UTF-8")
+    binding_error = None
+    with closing(sqlite3.connect(":memory:", autocommit=True)) as db:
+        db.execute("CREATE TABLE names (value TEXT)")
+        try:
+            db.execute("INSERT INTO names VALUES (?)", (unpaired,))
+        except UnicodeEncodeError as error:
+            binding_error = type(error).__name__
+        require(binding_error == "UnicodeEncodeError", "Unexpected surrogate binding result")
+        supplemental = json.loads(r'"\ud83d\ude00"')
+        require(supplemental == "\U0001f600", "Valid surrogate pair must decode as one scalar")
+        db.execute("INSERT INTO names VALUES (?)", (supplemental,))
+        require(db.execute("SELECT value FROM names").fetchone()[0] == supplemental,
+                "Supplemental Unicode roundtrip")
+    controls = ["\x00", "\t", "\r", "\n", "\x7f", "\x85", "\u2028", "\u2029"]
+    return {"whitespace": whitespace, "accepted_phones": accepted, "rejected_phones": rejected,
+            "unpaired_surrogate_utf8_error": utf8_error, "unpaired_surrogate_binding_error": binding_error,
+            "supplemental_unicode_roundtrip": True,
+            "control_categories": {f"U+{ord(c):04X}": unicodedata.category(c) for c in controls},
+            "nbsp_category": unicodedata.category("\u00a0")}
 
 
 def schema_transaction(directory):
@@ -67,8 +93,11 @@ def schema_transaction(directory):
     with closing(sqlite3.connect(path, autocommit=True)) as db:
         require(db.execute("SELECT name, phone FROM records").fetchall() == [("Commit", "2")],
                 "Method commit persisted")
+        integrity = db.execute("PRAGMA integrity_check").fetchall()
+        require(integrity == [("ok",)], "Healthy scratch schema integrity result")
     return {"journal_mode": journal, "synchronous": sync, "schema_and_markers_rollback": True,
-            "schema_and_markers_persist": True, "commit_rollback_with_autocommit_false": True}
+            "schema_and_markers_persist": True, "commit_rollback_with_autocommit_false": True,
+            "healthy_integrity_check": [row[0] for row in integrity]}
 
 
 def comparison_and_ids(directory):
