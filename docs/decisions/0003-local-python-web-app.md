@@ -30,6 +30,8 @@
 
 ## Связанные документы
 
+[Flask Quickstart](https://flask.palletsprojects.com/en/stable/quickstart/) подтверждает наличие маршрутов, JSON и локального сервера разработки. Выбор этого стека остаётся решением проекта; совместимость зафиксированных зависимостей и скорость нужно проверить при реализации. См. [Fact Grounding](../../openspec/changes/create-phone-directory/fact-grounding.md), F-12.
+
 - [Технический проект](../../openspec/changes/create-phone-directory/design.md), D3 и «HTTP API».
 - [Требования к доступу](../../openspec/changes/create-phone-directory/specs/directory-access/spec.md).
 - [Пути CUJ-1–5](../../openspec/changes/create-phone-directory/critical-user-journeys.md).

@@ -32,6 +32,8 @@
 
 ## Связанные документы
 
+Проверенные основания: [Python sqlite3](https://docs.python.org/3.14/library/sqlite3.html) описывает работу с SQLite без отдельного сервера; [реестр Fact Grounding](../../openspec/changes/create-phone-directory/fact-grounding.md) отделяет эту возможность от ещё не проверенных скорости и сохранности приложения. Наличие sqlite3 в целевой сборке Python проверяется при установке.
+
 - [ADR-0002: граница хранения](0002-storage-boundary.md).
 - [Технический проект, D1](../../openspec/changes/create-phone-directory/design.md#d1-sqlite-и-транзакции).
 - [Гарантии сохранности](../../openspec/changes/create-phone-directory/specs/durable-storage/spec.md).

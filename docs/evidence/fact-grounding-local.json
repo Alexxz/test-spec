@@ -1,0 +1,79 @@
+{
+  "recorded_at_utc": "2026-10-25T11:31:07.002434+00:00",
+  "environment": {
+    "python": "3.14.4",
+    "sqlite": "3.46.1",
+    "unicode": "16.0.0",
+    "os": "Linux",
+    "os_release": "7.0.0-38-generic",
+    "architecture": "x86_64"
+  },
+  "script_sha256": "327d3485c0d4f07572c9165e1cd829b32e81358e27c003125bff34f3597edcf7",
+  "scope": "Temporary platform experiments only; no application, crash, HTTP or performance acceptance.",
+  "checks": [
+    {
+      "name": "python_strings",
+      "status": "passed",
+      "details": {
+        "whitespace": {
+          "' '": true,
+          "'\\t'": true,
+          "'\\n'": true,
+          "'\\xa0'": true
+        },
+        "accepted_phones": [
+          "00123",
+          "+79991234567",
+          "1",
+          "999999999999999"
+        ],
+        "rejected_phones": [
+          "",
+          "+",
+          "1111111111111111",
+          "123abc",
+          "123\n",
+          "١٢٣",
+          "１２３",
+          "1-23"
+        ]
+      }
+    },
+    {
+      "name": "schema_transaction",
+      "status": "passed",
+      "details": {
+        "journal_mode": "delete",
+        "synchronous": 2,
+        "schema_and_markers_rollback": true,
+        "schema_and_markers_persist": true,
+        "commit_rollback_with_autocommit_false": true
+      }
+    },
+    {
+      "name": "comparison_and_ids",
+      "status": "passed",
+      "details": {
+        "exact_name_matches": 2,
+        "leading_zeros_preserved": true,
+        "canonical_unicode_forms_distinct": true,
+        "id_after_deleted_5": 6,
+        "numeric_input_converted_to_text": true,
+        "query_plan": [
+          "SEARCH records USING INDEX records_name (name=?)"
+        ],
+        "note": "Deletion is a platform experiment, not a proposed application operation."
+      }
+    },
+    {
+      "name": "full_database",
+      "status": "passed",
+      "details": {
+        "error": "SQLITE_FULL",
+        "old_data_unchanged": true,
+        "write_after_limit_restored": true
+      }
+    }
+  ],
+  "status": "passed"
+}
